@@ -75,7 +75,8 @@ class ArticleDetailSerializer(TaggitSerializer, serializers.ModelSerializer):
 class ArticleCreateUpdateSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Serializer for creating/updating articles (editors only)."""
     
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
+    slug = serializers.SlugField(required=False)
     
     class Meta:
         model = Article
@@ -139,7 +140,8 @@ class PodcastSerializer(TaggitSerializer, serializers.ModelSerializer):
 class PodcastCreateUpdateSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Serializer for creating/updating podcasts."""
     
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
+    slug = serializers.SlugField(required=False)
     
     class Meta:
         model = Podcast
@@ -174,7 +176,8 @@ class VideoSerializer(TaggitSerializer, serializers.ModelSerializer):
 class VideoCreateUpdateSerializer(TaggitSerializer, serializers.ModelSerializer):
     """Serializer for creating/updating videos."""
     
-    tags = TagListSerializerField()
+    tags = TagListSerializerField(required=False)
+    slug = serializers.SlugField(required=False)
     
     class Meta:
         model = Video
