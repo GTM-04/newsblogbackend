@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django_filters',
     'taggit',
     'corsheaders',
-    'storages',
+    # 'storages',  # Disabled - only needed for S3/cloud storage
     
     # Local apps
     'apps.users',
