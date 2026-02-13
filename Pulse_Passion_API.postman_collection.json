@@ -1,0 +1,523 @@
+{
+  "info": {
+    "name": "Pulse & Passion API",
+    "description": "Complete API collection for Pulse & Passion news blog admin portal",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{access_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "access_token",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "refresh_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', data.access);",
+                  "    pm.collectionVariables.set('refresh_token', data.refresh);",
+                  "    console.log('Tokens saved successfully');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"editor@test.com\",\n  \"password\": \"your_password\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "login", ""]
+            }
+          }
+        },
+        {
+          "name": "Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    pm.collectionVariables.set('access_token', data.access);",
+                  "    console.log('Access token refreshed');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/refresh/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "auth", "refresh", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/me/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "me", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Articles",
+      "item": [
+        {
+          "name": "List Articles",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ""]
+            }
+          }
+        },
+        {
+          "name": "List Published Articles",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/?status=PUBLISHED",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ""],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "PUBLISHED"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter by Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/?category=technology",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ""],
+              "query": [
+                {
+                  "key": "category",
+                  "value": "technology"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article by Slug",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "test-article"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Article",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Test Article\",\n  \"slug\": \"test-article\",\n  \"subtitle\": \"A test subtitle\",\n  \"summary\": \"This is a test article summary\",\n  \"body\": \"Full article content goes here...\",\n  \"category\": 1,\n  \"tags\": [\"test\", \"news\"],\n  \"content_type\": \"NEWS\",\n  \"status\": \"DRAFT\",\n  \"is_editor_pick\": false,\n  \"is_paywalled\": false,\n  \"sources_count\": 3,\n  \"experts_interviewed\": 1,\n  \"confidence_rating\": \"MEDIUM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/articles/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Article",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Title\",\n  \"summary\": \"Updated summary\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/articles/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "test-article"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Article",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "test-article"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Article Schema (JSON-LD)",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/:slug/schema/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ":slug", "schema", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "test-article"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Podcasts",
+      "item": [
+        {
+          "name": "List Podcasts",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Podcast",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "episode-1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Podcast",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Episode 1: Test\",\n  \"slug\": \"episode-1-test\",\n  \"description\": \"Episode description\",\n  \"episode_number\": 1,\n  \"duration_seconds\": 3600,\n  \"tags\": [\"podcast\"],\n  \"is_featured\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Videos",
+      "item": [
+        {
+          "name": "List Videos",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/videos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Video",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/videos/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "video-title"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Video",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Video Title\",\n  \"slug\": \"video-title\",\n  \"description\": \"Video description\",\n  \"external_url\": \"https://youtube.com/watch?v=example\",\n  \"duration_seconds\": 600,\n  \"tags\": [\"video\"],\n  \"is_featured\": false\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/videos/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", ""]
+            }
+          }
+        },
+        {
+          "name": "Get Category",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/categories/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categories", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "technology"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Homepage",
+      "item": [
+        {
+          "name": "Get Homepage Sections",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/homepage/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "homepage", ""]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Search & Recommendations",
+      "item": [
+        {
+          "name": "Search Articles",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/search/?q=climate",
+              "host": ["{{base_url}}"],
+              "path": ["api", "search", ""],
+              "query": [
+                {
+                  "key": "q",
+                  "value": "climate"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Recommendations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/recommendations/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "recommendations", ""]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

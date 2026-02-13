@@ -1,0 +1,42 @@
+# Core Django
+Django==5.1.5
+psycopg2-binary==2.9.9
+
+# Django REST Framework
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+
+# Filtering and search
+django-filter==24.1
+django-taggit==5.0.1
+
+# Image handling
+Pillow==10.2.0
+
+# Storage (S3-compatible)
+django-storages==1.14.2
+boto3==1.34.34
+
+# CORS
+django-cors-headers==4.3.1
+
+# Celery and Redis (async tasks)
+celery==5.3.6
+redis==5.0.1
+
+# Environment variables
+python-decouple==3.8
+
+# Testing
+pytest==7.4.4
+pytest-django==4.7.0
+pytest-cov==4.1.0
+factory-boy==3.3.0
+
+# Code quality
+flake8==7.0.0
+black==24.1.1
+
+# Production server
+gunicorn==21.2.0
+whitenoise==6.6.0
