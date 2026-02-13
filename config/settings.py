@@ -87,8 +87,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Use PostgreSQL if DATABASE_URL is set (Railway), otherwise SQLite (local)
 import dj_database_url
 
-# Get DATABASE_URL and check it's not empty
-database_url = os.environ.get('DATABASE_URL', '').strip()
+# Railway default PostgreSQL connection string
+RAILWAY_DEFAULT_DB_URL = 'postgresql://postgres:rblwNBxXCXBABPNxWoctWdDvlnFJqAEp@metro.proxy.rlwy.net:40183/railway'
+
+database_url = os.environ.get('DATABASE_URL', '').strip() or RAILWAY_DEFAULT_DB_URL
 
 if database_url:
     # Railway PostgreSQL with DATABASE_URL
