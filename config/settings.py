@@ -195,7 +195,7 @@ SIMPLE_JWT = {
 # CORS settings
 CORS_ALLOWED_ORIGINS = os.environ.get(
     'CORS_ALLOWED_ORIGINS',
-    'http://localhost:3000,http://localhost:5173,http://localhost:8000'
+    'http://localhost:3000,http://localhost:5173,http://localhost:8000,https://pulsenpassion.vercel.app'
 ).split(',')
 
 CORS_ALLOW_CREDENTIALS = True
