@@ -87,17 +87,20 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Use PostgreSQL if DATABASE_URL is set (Railway), otherwise SQLite (local)
 import dj_database_url
 
-if os.environ.get('DATABASE_URL'):
-    # Railway PostgreSQL
+# Get DATABASE_URL and check it's not empty
+database_url = os.environ.get('DATABASE_URL', '').strip()
+
+if database_url:
+    # Railway PostgreSQL with DATABASE_URL
     DATABASES = {
         'default': dj_database_url.config(
-            default=os.environ.get('DATABASE_URL'),
+            default=database_url,
             conn_max_age=600,
             conn_health_checks=True,
         )
     }
 elif os.environ.get('PGHOST'):
-    # Manual PostgreSQL configuration
+    # Manual PostgreSQL configuration with individual variables
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -109,7 +112,7 @@ elif os.environ.get('PGHOST'):
         }
     }
 else:
-    # Local SQLite
+    # Local SQLite fallback (not recommended for production)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
