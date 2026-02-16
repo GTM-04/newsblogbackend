@@ -80,6 +80,29 @@ class ArticleViewSet(viewsets.ModelViewSet):
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
     
+    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny])
+    def increment_view(self, request, slug=None):
+        """Increment article view count without returning full article data."""
+        article = self.get_object()
+        
+        # Increment view count atomically
+        article.increment_view_count()
+        
+        # Refresh from database to get updated count
+        article.refresh_from_db()
+        
+        # Track user view for personalization (if authenticated)
+        if request.user.is_authenticated:
+            ArticleView.objects.get_or_create(
+                user=request.user,
+                article=article
+            )
+        
+        return Response({
+            'view_count': article.view_count,
+            'slug': article.slug
+        }, status=status.HTTP_200_OK)
+    
     @action(detail=True, methods=['get'])
     def schema(self, request, slug=None):
         """Return JSON-LD schema for the article."""
