@@ -293,6 +293,27 @@
               ]
             }
           }
+        },
+        {
+          "name": "Increment Article View",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/articles/:slug/increment_view/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "articles", ":slug", "increment_view", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "test-article"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -355,6 +376,72 @@
               "path": ["api", "podcasts", ""]
             }
           }
+        },
+        {
+          "name": "Update Podcast",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Podcast Title\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "episode-1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Podcast",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "episode-1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Increment Podcast View",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/podcasts/:slug/increment_view/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "podcasts", ":slug", "increment_view", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "episode-1"
+                }
+              ]
+            }
+          }
         }
       ]
     },
@@ -415,6 +502,72 @@
               "raw": "{{base_url}}/api/videos/",
               "host": ["{{base_url}}"],
               "path": ["api", "videos", ""]
+            }
+          }
+        },
+        {
+          "name": "Update Video",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated Video Title\",\n  \"description\": \"Updated description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/videos/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "video-title"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete Video",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/videos/:slug/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ":slug", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "video-title"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Increment Video View",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/videos/:slug/increment_view/",
+              "host": ["{{base_url}}"],
+              "path": ["api", "videos", ":slug", "increment_view", ""],
+              "variable": [
+                {
+                  "key": "slug",
+                  "value": "video-title"
+                }
+              ]
             }
           }
         }

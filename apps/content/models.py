@@ -246,6 +246,9 @@ class Podcast(models.Model):
     
     is_featured = models.BooleanField(default=False, db_index=True)
     
+    # Analytics
+    view_count = models.PositiveIntegerField(default=0)
+    
     # SEO
     meta_title = models.CharField(max_length=70, blank=True)
     meta_description = models.CharField(max_length=160, blank=True)
@@ -321,6 +324,9 @@ class Video(models.Model):
     )
     
     is_featured = models.BooleanField(default=False, db_index=True)
+    
+    # Analytics
+    view_count = models.PositiveIntegerField(default=0)
     
     # SEO
     meta_title = models.CharField(max_length=70, blank=True)

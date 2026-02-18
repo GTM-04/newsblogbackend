@@ -92,10 +92,12 @@ class ArticleViewSet(viewsets.ModelViewSet):
         article.refresh_from_db()
         
         # Track user view for personalization (if authenticated)
+        # Use update_or_create to avoid duplicate key constraint violations
         if request.user.is_authenticated:
-            ArticleView.objects.get_or_create(
+            ArticleView.objects.update_or_create(
                 user=request.user,
-                article=article
+                article=article,
+                defaults={'viewed_at': timezone.now()}
             )
         
         return Response({
@@ -152,6 +154,24 @@ class PodcastViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Set author to current user."""
         serializer.save(author=self.request.user)
+    
+    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny])
+    def increment_view(self, request, slug=None):
+        """Increment podcast view count."""
+        podcast = self.get_object()
+        
+        # Increment view count atomically using F expression
+        Podcast.objects.filter(pk=podcast.pk).update(
+            view_count=F('view_count') + 1
+        )
+        
+        # Refresh from database to get updated count
+        podcast.refresh_from_db()
+        
+        return Response({
+            'view_count': podcast.view_count,
+            'slug': podcast.slug
+        }, status=status.HTTP_200_OK)
 
 
 class VideoViewSet(viewsets.ModelViewSet):
@@ -176,6 +196,24 @@ class VideoViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Set author to current user."""
         serializer.save(author=self.request.user)
+    
+    @action(detail=True, methods=['post'], permission_classes=[permissions.AllowAny])
+    def increment_view(self, request, slug=None):
+        """Increment video view count."""
+        video = self.get_object()
+        
+        # Increment view count atomically using F expression
+        Video.objects.filter(pk=video.pk).update(
+            view_count=F('view_count') + 1
+        )
+        
+        # Refresh from database to get updated count
+        video.refresh_from_db()
+        
+        return Response({
+            'view_count': video.view_count,
+            'slug': video.slug
+        }, status=status.HTTP_200_OK)
 
 
 class SearchViewSet(viewsets.ViewSet):
